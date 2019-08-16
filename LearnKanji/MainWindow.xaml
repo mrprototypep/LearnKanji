@@ -1,0 +1,106 @@
+﻿<Window x:Class="LearnKanji.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LearnKanji"
+        mc:Ignorable="d"
+        Title="pSuite LearnKanji" Height="800" Width="960" Background="#FF23272A" Icon="Resources/psuite_ico.ico">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2C2F33">
+        <Grid Background="#FF23272A" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="350">
+            <ListBox Name="TermLists" Background="#FF23272A" BorderBrush="{x:Null}" SelectionMode="Multiple" Margin="0,50,0,75" SelectionChanged="TermLists_SelectionChanged"/>
+            <Grid HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="350">
+                <Label Content="Sets" Background="#FF23272A" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="18pt" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="75" VerticalAlignment="Bottom" Width="350">
+                <Image HorizontalAlignment="Left" VerticalAlignment="Center" Source="Resources/psuite.png"/>
+                <Button Name="SetsButton" HorizontalAlignment="Right" Width="75" VerticalAlignment="Stretch" Margin="15,15,105,15" Content="Sets..." Click="SetsButton_Click"/>
+                <Button Name="ReloadButton" IsEnabled="False" HorizontalAlignment="Right" Width="75" VerticalAlignment="Stretch" Margin="15,15,15,15" Content="Load" Click="ReloadButton_Click"/>
+            </Grid>
+        </Grid>
+        
+        <Grid Name="MainGrid" HorizontalAlignment="Stretch" Margin="350,0,0,0" VerticalAlignment="Stretch">
+            <Image HorizontalAlignment="Left" Height="250" Margin="50,0,0,0" VerticalAlignment="Top" Width="500" Source="Resources/psuite.png"/>
+            <Grid Name="SettingsGrid" VerticalAlignment="Top" HorizontalAlignment="Right" Width="500" Height="150" Background="Gray" Margin="50,50,50,50">
+                <ComboBox Name="QuestionDropdown" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="235" Height="40" FontSize="18" VerticalContentAlignment="Center" SelectionChanged="QuestionDropdown_SelectionChanged">
+                    <ComboBoxItem Name="QTerm" Content="Term"/>
+                    <ComboBoxItem Name="QHiragana" Content="Hiragana"/>
+                    <ComboBoxItem Name="QAnswer" Content="Meaning"/>
+                </ComboBox>
+                <ComboBox Name="AnswerDropdown" HorizontalAlignment="Left" Margin="255,30,0,0" VerticalAlignment="Top" Width="235" Height="40" FontSize="18" VerticalContentAlignment="Center" SelectionChanged="AnswerDropdown_SelectionChanged">
+                    <ComboBoxItem Name="ATerm" Content="Term"/>
+                    <ComboBoxItem Name="AHiragana" Content="Hiragana"/>
+                    <ComboBoxItem Name="AAnswer" Content="Meaning"/>
+                </ComboBox>
+                <TextBlock Name="ScoreBox" HorizontalAlignment="Right" Margin="10,10,10,10" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" FontSize="26" FontWeight="UltraBold"/>
+                <CheckBox Name="HintCheck" Content="Guided mode" HorizontalAlignment="Left" Margin="10,0,0,30" VerticalAlignment="Bottom" FontSize="14" Background="White" Unchecked="HintCheck_CheckChanged" Checked="HintCheck_CheckChanged"/>
+            </Grid>
+            <Grid Name="QAGrid" Height="400" HorizontalAlignment="Stretch" Background="#FF444447" Margin="50,250,50,50" VerticalAlignment="Top">
+                <Grid Margin="0,0,0,100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Name="QuestionBox" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="" VerticalAlignment="Center" TextAlignment="Center" FontSize="120"/>
+                </Grid>
+                <TextBox Name="AnswerBox" HorizontalAlignment="Stretch" FontSize="42" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="100" TextWrapping="Wrap" VerticalAlignment="Bottom" Background="#FF939393" CaretBrush="Black" SelectionBrush="#FFABADB3" KeyUp="AnswerBox_KeyUp"/>
+                <Grid VerticalAlignment="Bottom" Height="100" HorizontalAlignment="Stretch">
+                    <TextBlock Visibility="Collapsed" Name="HintBox" Text="" IsHitTestVisible="False" FontSize="42" TextWrapping="Wrap" Foreground="#77000000" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+    </Grid>
+
+    <Window.Resources>
+        <Style TargetType="{x:Type local:TermList}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type local:TermList}">
+                        <Border
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Selector.IsSelected" Value="False">
+                                <Setter Property="Background" Value="#FF2C2F33"/>
+                                <Setter Property="FontSize" Value="18pt"/>
+                                <Setter Property="Margin" Value="5,5,5,5"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="Selector.IsSelected" Value="True">
+                                <Setter Property="Background" Value="#FF0E3B59"/>
+                                <Setter Property="FontSize" Value="18pt"/>
+                                <Setter Property="Margin" Value="5,5,5,5"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FF2C2F33"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF0E3B59"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+</Window>
